@@ -55,3 +55,30 @@ print(tensor)
 tensor = torch.tensor([1, 2, 3])
 print(tensor * tensor)
 print(torch.matmul(tensor, tensor))
+
+# inner dimensions must be the same shape, output: outer dimensions
+print(torch.matmul(torch.rand(3, 2), torch.rand(2, 3)))
+
+tensor_B = torch.tensor([[7, 10],
+                         [8, 11],
+                         [9, 12]])
+print(tensor_B)
+print(tensor_B.T)
+
+# Tensor aggregation
+x = torch.arange(0, 100, 10)
+print(x.dtype)
+print(torch.min(x))
+print(x.min())
+
+print(torch.max(x))
+print(x.max())
+
+#torch.mean requires a tensor of float32 datatype
+print(torch.mean(x.type(torch.float32)))
+print(x.type(torch.float32).mean())
+
+print(torch.sum(x))
+print(x.sum())
+
+

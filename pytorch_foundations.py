@@ -81,4 +81,88 @@ print(x.type(torch.float32).mean())
 print(torch.sum(x))
 print(x.sum())
 
+# Finding the positional min and max
+print(x.argmin()) # index value
+print(x[0]) # at index 0
 
+print(x.argmax())
+print(x[9])
+
+# Reshaping, viewing, squeezing and stacking
+x = torch.arange(1., 10.)
+print(x)
+print(x.shape)
+
+x_reshaped = x.reshape(1, 9)
+print(x_reshaped)
+print(x_reshaped.shape)
+
+x_reshaped = x.reshape(9, 1)
+print(x_reshaped)
+print(x_reshaped.shape)
+
+z = x.view(1, 9)
+print(z)
+print(z.shape)
+
+# changing z changes x
+z[0, 1] = 5
+print(z)
+print(x)
+
+x_stacked = torch.stack([x, x, x, x], dim=0)
+print(x)
+print(x.shape)
+print(x_stacked)
+print(x_stacked.shape)
+
+x_stacked = torch.stack([x, x, x, x], dim=1)
+print(x)
+print(x.shape)
+print(x_stacked)
+print(x_stacked.shape)
+
+# torch.squeeze() - removes all single dimensions from a target tensor
+x_reshaped = x.reshape(1, 9)
+print(x_reshaped)
+print(x_reshaped.shape)
+x_squeezed = x_reshaped.squeeze()
+print(x_squeezed)
+print(x_reshaped.squeeze().shape)
+
+# torch.unsqueeze() - adds a single dimension to a target tensor at a specific dim
+x_unsqueezed = x_squeezed.unsqueeze(dim=1)
+print(x_unsqueezed)
+print(x_unsqueezed.shape)
+
+# torch.permute - rearanges the dimensions of a target tensor in a specified order
+x_original = torch.rand(size=(224, 224, 3)) # hoght, width, colour_channels
+x_permuted = x_original.permute(2, 0, 1) # shifts axis 0->1, 1->2, 2->0
+print(x_original.shape)
+print(x_permuted.shape)
+
+# indexing
+x_original[0, 0, 0] = 728218
+print(x_original[0, 0, 0])
+print(x_permuted[0, 0, 0])
+
+x = torch.arange(1, 10).reshape(1, 3, 3)
+print(x)
+print(x.shape)
+
+print(x[0]) # 0th dimension
+print(x[0][0]) # also x[0, 0], 1st dimension
+print(x[0][0][0]) # 2nd dimension
+
+print(x[:, 0])
+# all values in the 0th and 1st dimensions but only index 1 of second dimension
+print(x[:, :, 1])
+# all values of the 0 dim but only the 1 index value of 1st and 2nd dimension
+print(x[:, 1, 1])
+# index 0 of 0th and 1st dimension and all alues of 2nd dimension
+print(x[0, 0, :])
+
+# Index on x to return 9
+print(x[0][2][2])
+# Index on x to return 3, 6, 9
+print(x[:, :, 2])

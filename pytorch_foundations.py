@@ -208,3 +208,22 @@ random_tensor_D = torch.rand(3, 4)
 print(random_tensor_C)
 print(random_tensor_D)
 print(random_tensor_C == random_tensor_D)
+
+# Check for GPU
+print(torch.cuda.is_available())
+
+device = "mps" if torch.mps.is_available() else "cpu"
+print(device)
+
+# device agnostic code: run on GPU if available, else default to CPU
+# putting tensors and models on the GPU
+tensor = torch.tensor([1, 2, 3], device="cpu")
+print(tensor, tensor.device)
+
+# move tensor to GPU if available
+tensor_on_gpu = tensor.to(device)
+print(tensor_on_gpu, tensor_on_gpu.device)
+
+# move tensors back to the CPU
+tensor_back_on_cpu = tensor_on_gpu.cpu().numpy()
+print(tensor_back_on_cpu)

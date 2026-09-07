@@ -166,3 +166,24 @@ print(x[0, 0, :])
 print(x[0][2][2])
 # Index on x to return 3, 6, 9
 print(x[:, :, 2])
+
+# numpy array to tensor
+import numpy as np
+array = np.arange(1.0, 8.0)
+tensor = torch.from_numpy(array) # a new tensor in memory
+print(array) 
+print(tensor)
+print(array.dtype) # default numpy dtype is float64
+print(tensor.dtype)
+print(tensor.type(torch.float32).dtype) # convert to float32
+
+array = array + 1 
+print(array)
+print(tensor)
+
+# tensor to numpy array
+tensor = torch.ones(7)
+numpy_tensor = tensor.numpy()
+print(tensor.dtype)
+print(numpy_tensor.dtype)
+

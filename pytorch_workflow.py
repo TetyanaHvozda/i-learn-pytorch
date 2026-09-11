@@ -24,3 +24,33 @@ X = torch.arange(start, end, step).unsqueeze(dim=1)
 y = weight * X + bias
 
 print(X[:10], y[:10])
+
+# split data into test and train
+# train - learn patterns, 60-80%
+# validation - tune model patterns, 10-20% (optional)
+# test - see if the model is ready for unseen data, 10-20%
+train_split = int(0.8 * len(X))
+print(train_split)
+X_train, y_train = X[:train_split], y[:train_split]
+X_test, y_test = X[train_split:], y[train_split:]
+
+print(len(X_train), len(y_train), len(X_test), len(y_test))
+
+# Visualize
+def plot_predictions(train_data=X_train,
+                     train_labels=y_train,
+                     test_data=X_test,
+                     test_labels=y_test,
+                     predictions=None):
+    plt.figure(figsize=(10, 7))
+
+    plt.scatter(train_data, train_labels, c="b", s=4, label="Training data")
+    plt.scatter(test_data, test_labels, c="g", s=4, label="Testing data")
+
+    if predictions is not None:
+        plt.scatter(test_data, predictions, c="r", s=4, label="Predictions")
+
+    plt.legend(prop={"size": 14})
+
+plot_predictions()
+plt.show()

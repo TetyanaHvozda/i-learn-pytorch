@@ -52,18 +52,29 @@ def plot_predictions(train_data=X_train,
 
     plt.legend(prop={"size": 14})
 
-plot_predictions()
-plt.show()
+#plot_predictions()
+#plt.show()
 
 # Build a PyTorch model
 class LinearRegressionModel(nn.Module):
     def __init__(self):
         super().__init__()
-        self.weights = nn.Parameter(torch.randn(1,
+        self.weight = nn.Parameter(torch.randn(1,
                                                 requires_grad=True,
                                                 dtype=torch.float))
         self.bias = nn.Parameter(torch.randn(1,
                                              requires_grad=True,
                                              dtype=torch.float))
         def forward(self, x: torch.Tensor) -> torch.Tensor:
-            return self.weights * x + self.bias
+            return self.weight * x + self.bias
+
+# torch.optim -> optimizer
+# def forward() -> All nn.Module subclasses require you to overwrite
+
+# Check the content of the model
+torch.manual_seed(42)
+
+model_0 = LinearRegressionModel()
+
+print(list(model_0.parameters()))
+print(model_0.state_dict())

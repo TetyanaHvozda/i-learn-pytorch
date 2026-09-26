@@ -95,4 +95,30 @@ print(y_preds)
 print(list(model_0.parameters()))
 print(model_0.state_dict())
 
-# MAE
+# MAE (l1 loss)
+loss_fn = nn.L1Loss()
+# randomly adjusting mean values
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.01)
+
+# training loop steps and intuition
+epochs = 1
+
+for epoch in range(epochs):
+    # set the model to training mode
+    model_0.train() # sets all parameters that requires gradient
+
+    # Forward pass
+    y_pred = model_0(X_train)
+
+    # Calculate the loss
+    loss = loss_fn(y_pred, y_train)
+    optimizer.zero_grad()
+
+    # perform backpropagation on the loss with respect to the parameters of the model
+    loss.backward()
+
+    # step the optimizer (perform gradient descent)
+    optimizer.step()
+
+    model_0.eval() # turns off gradient tracking

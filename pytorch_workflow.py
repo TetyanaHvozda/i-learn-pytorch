@@ -65,8 +65,8 @@ class LinearRegressionModel(nn.Module):
         self.bias = nn.Parameter(torch.randn(1,
                                              requires_grad=True,
                                              dtype=torch.float))
-        def forward(self, x: torch.Tensor) -> torch.Tensor:
-            return self.weight * x + self.bias
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        return self.weight * x + self.bias
 
 # torch.optim -> optimizer
 # def forward() -> All nn.Module subclasses require you to overwrite
@@ -78,3 +78,21 @@ model_0 = LinearRegressionModel()
 
 print(list(model_0.parameters()))
 print(model_0.state_dict())
+
+# Making predictions
+with torch.inference_mode(): # turns off gradient tracking
+    y_preds = model_0(X_test)
+
+print(y_preds)
+
+# plot_predictions(predictions=y_preds)
+# plt.show()
+
+# Train model
+# Loss function - measure how wrong is the prediction; lower better
+# Optimizer - takes the loss into account and adjusts parameters (e.g. weights and bias) to improve the loss function
+# for PyTorch: a training loop and a testing loop
+print(list(model_0.parameters()))
+print(model_0.state_dict())
+
+# MAE

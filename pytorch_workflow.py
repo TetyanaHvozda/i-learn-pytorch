@@ -101,8 +101,9 @@ loss_fn = nn.L1Loss()
 optimizer = torch.optim.SGD(params=model_0.parameters(),
                             lr=0.01)
 
+## Training
 # training loop steps and intuition
-epochs = 1
+epochs = 100
 
 for epoch in range(epochs):
     # set the model to training mode
@@ -120,5 +121,24 @@ for epoch in range(epochs):
 
     # step the optimizer (perform gradient descent)
     optimizer.step()
-
+    ## Testing; turns off different settings in the model (dropuot, batch norm) not needed for evaluation
     model_0.eval() # turns off gradient tracking
+    with torch.inference_mode():
+    # with torch.no_grad(): in older code
+        #1. forward pass
+        test_pred = model_0(X_test)
+
+        #2. calculate the loss
+        test_loss = loss_fn(test_pred, y_test)
+
+    if epoch % 10 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss} | Test loss: {test_loss}")
+        print(model_0.state_dict())
+
+with torch.inference_mode():
+    y_preds_new = model_0(X_test)
+
+# plot_predictions(predictions=y_preds_new)
+# plt.show()
+
+

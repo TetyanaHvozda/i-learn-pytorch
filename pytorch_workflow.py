@@ -160,4 +160,26 @@ with torch.inference_mode():
 # plot_predictions(predictions=y_preds_new)
 # plt.show()
 
+### Saving a model
+# torch.save() - saves a pytorch object, pickle module
+# serializing = saving; deserializing = loading
+# torch.load() - load a saved PyTorch object
+# torch.nn.Module.load_state_dict()
 
+model_0.state_dict()
+
+from pathlib import Path
+# create model directory
+MODEL_PATH = Path("models")
+MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+# create model save path
+MODEL_NAME = "01_pytorch_workflow_model_0.pth"
+MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
+
+#MODEL_SAVE_PATH
+
+# save the model state_dict
+print(f"Saving model to: {MODEL_SAVE_PATH}")
+torch.save(obj=model_0.state_dict(),
+           f=MODEL_SAVE_PATH)

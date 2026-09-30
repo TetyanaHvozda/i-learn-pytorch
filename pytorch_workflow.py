@@ -105,6 +105,10 @@ optimizer = torch.optim.SGD(params=model_0.parameters(),
 # training loop steps and intuition
 epochs = 100
 
+epoch_count = []
+loss_values = []
+test_loss_values = []
+
 for epoch in range(epochs):
     # set the model to training mode
     model_0.train() # sets all parameters that requires gradient
@@ -132,8 +136,23 @@ for epoch in range(epochs):
         test_loss = loss_fn(test_pred, y_test)
 
     if epoch % 10 == 0:
+        epoch_count.append(epoch)
+        loss_values.append(loss)
+        test_loss_values.append(test_loss)
         print(f"Epoch: {epoch} | Loss: {loss} | Test loss: {test_loss}")
         print(model_0.state_dict())
+
+
+import numpy as np
+print(np.array(torch.tensor(loss_values).numpy()))
+         # test_loss_values
+
+plt.plot(epoch_count, np.array(torch.tensor(loss_values).numpy()), label="Train loss")
+plt.plot(epoch_count, test_loss_values, label="Test loss")
+plt.title("Training and test loss curves")
+plt.ylabel("Loss")
+plt.xlabel("Epoch")
+plt.show()
 
 with torch.inference_mode():
     y_preds_new = model_0(X_test)

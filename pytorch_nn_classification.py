@@ -25,3 +25,21 @@ plt.scatter(x=X[:, 0],
             c=y, # color with labels
             cmap=plt.cm.RdYlBu)
 
+# Check input and output shapes
+X.shape, y.shape
+
+# View the first example of features and labels
+X_sample = X[0]
+y_sample = y[0]
+
+print(f"Values for one sample of X: {X_sample} and the same for y: {y_sample}")
+print(f"Shapes for one sample of X: {X_sample.shape} and the same for y: {y_sample.shape}")
+
+# Turn data into tensors and split into train and test
+import torch
+X = torch.from_numpy(X).type(torch.float)
+y = torch.from_numpy(y).type(torch.float)
+
+X[:5], y[:5]
+
+type(X), X.dtype, y.dtype

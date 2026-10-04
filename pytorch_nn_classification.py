@@ -55,3 +55,22 @@ X_train, X_test, y_train, y_test = train_test_split(X,
 len(X_train), len(X_test), len(y_train), len(y_test)
 
 # 2. Building a model to classify blue and red dots
+import torch
+from torch import nn
+
+device = 'mps' if torch.mps.is_available() else 'cpu'
+device 
+
+class CircleModelV1(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer_1 = nn.Linear(in_features=2, out_features=5)
+        self.layer_2 = nn.Linear(in_features=5, out_features=1)
+
+    def forward(self, x):
+        return self.layer_2(self.layer_1(x)) # x -> layer_1 -> layer_2 -> output
+
+# Instantiate an instace of a model class and send it to the device
+model_0 = CircleModelV1().to(device)
+model_0
+

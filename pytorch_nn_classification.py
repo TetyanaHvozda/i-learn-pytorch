@@ -43,3 +43,15 @@ y = torch.from_numpy(y).type(torch.float)
 X[:5], y[:5]
 
 type(X), X.dtype, y.dtype
+
+# split data into training and test sets
+from sklearn.model_selection import train_test_split
+
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y, 
+                                                    test_size=0.2,
+                                                    random_state=42)
+
+len(X_train), len(X_test), len(y_train), len(y_test)
+
+# 2. Building a model to classify blue and red dots

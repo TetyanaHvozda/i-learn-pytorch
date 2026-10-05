@@ -102,7 +102,7 @@ print(f"\nFirst 10 labels: \n{y_test[:10]}")
 
 # Loss and optimizer
 # for classification - binary cross entropy; for regression - MAE or MSE
-# how wrong model's predictions are
+# loss - how wrong model's predictions are
 # loss_fn = nn.BCELoss()
 loss_fn = nn.BCEWithLogitsLoss() # sigmoid activation function builtin
 
@@ -115,4 +115,25 @@ def accuracy_fn(y_true, y_pred):
     acc = (correct/len(y_pred)) * 100
     return acc
 
+# 3. train model
+# * forward pass
+# * calculate the loss
+# * optimizer zero grad
+# * Loss backward (backpropagation)
+# * Optimizer step (gradient descent)
+model_0.eval()
+with torch.inference_mode():
+    y_logits = model_0(X_test.to(device))[:5]
+y_logits
 
+y_pred_probs = torch.sigmoid(y_logits)
+y_pred_probs
+
+torch.round(y_pred_probs)
+# find th epredicted labels
+y_preds = torch.round(y_pred_probs)
+# logits -> pred probs -> pred -> labels
+y_pred_labels = torch.round(torch.sigmoid(model_0(X_test.to(device))[:5]))
+print(torch.eq(y_preds.squeeze(), y_pred_labels.squeeze()))
+# get rid of extra dimension
+y_preds.squeeze()

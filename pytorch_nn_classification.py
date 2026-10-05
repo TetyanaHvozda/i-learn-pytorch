@@ -91,4 +91,28 @@ model_0 = nn.Sequential(
 
 model_0
 
+# Make predictions
+with torch.inference_mode():
+    untrained_preds = model_0(X_test.to(device))
+untrained_preds = model_0(X_test.to(device))
+print(f"Length of predictions: {len(untrained_preds)}, Shape: {untrained_preds.shape}")
+print(f"Length of test samples: {len(X_test)}, Shape: {X_test.shape}")
+print(f"\nFirst 10 predictions: \n{torch.round(untrained_preds[:10])}")
+print(f"\nFirst 10 labels: \n{y_test[:10]}")
+
+# Loss and optimizer
+# for classification - binary cross entropy; for regression - MAE or MSE
+# how wrong model's predictions are
+# loss_fn = nn.BCELoss()
+loss_fn = nn.BCEWithLogitsLoss() # sigmoid activation function builtin
+
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.1)
+
+# calculate accuracy
+def accuracy_fn(y_true, y_pred):
+    correct = torch.eq(y_true, y_pred).sum().item()
+    acc = (correct/len(y_pred)) * 100
+    return acc
+
 

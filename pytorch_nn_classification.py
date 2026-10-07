@@ -202,4 +202,39 @@ plot_decision_boundary(model_0, X_train, y_train)
 plt.subplot(1, 2, 2)
 plt.title("Test")
 plot_decision_boundary(model_0, X_test, y_test)
-    
+
+# improve the model:
+#1. add more layers
+#2. add more hidden units - from 5 to 10 hidden units
+#3. fit for longer - increase epochs
+#4. Change the activation functions (ReLU())
+#5. Change th elearning rate
+#6. Change the loss function
+
+class CircleModelV1(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.layer_1 = nn.Linear(in_features=2, out_features=10)
+        self.layer_2 = nn.Linear(in_features=10, out_features=10)
+        self.layer_3 = nn. Linear(in_features=10, out_features=1)
+
+    def forward(self, x):
+        # z = self.layer_1(x)
+        # z = self.layer_2(z)
+        # z = self.layer_3(z)
+
+        return self.layer_3(self.layer_2(self.layer_1(x)))
+
+model_1 = CircleModelV1().to(device)
+model_1
+
+# Create a loss function
+loss_fn = nn.BCEWithLogitsLoss()
+
+# Create an optimizer
+optimizer = torch.optim.SGD(params=model_1.parameters(),
+                            lr=0.1)
+
+# training and evaluation loop for model_1
+torch.manual_seed(42)
+

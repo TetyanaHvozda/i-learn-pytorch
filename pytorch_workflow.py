@@ -257,6 +257,11 @@ torch.manual_seed(42)
 
 epoch = 200
 
+# put data on a target device
+X_train = X_train.to(device)
+y_train = y_train.to(device)
+y_test = y_test.to(device)
+
 for epoch in range(epochs):
     model_1.train()
 
@@ -278,3 +283,37 @@ for epoch in range(epochs):
 
     if epoch % 10 == 0:
         print(f"Epoch: {epoch} | Loss: {loss} | Test loss: {test_loss}")
+
+# 4. Make and evaluate predictions
+model_1.eval()
+
+with torch.inference_mode():
+    y_preds = model_1(X_test)
+
+plot_predictions(predictions=y_preds.cpu())
+
+# 5. Saving and loading a trained model
+from pathlib import Path
+MODEL_PATH = Path("models")
+
+MODEL_PATH.mkdir(parents=True, exist_ok=True)
+
+MODEL_NAME = "01_pytorch_workflow_model_1.pth"
+MODEL_SAVE_PATH = MODEL_PATH / MODEL_NAME
+
+MODEL_SAVE_PATH
+
+print(f"Saving model to: {MODEL_SAVE_PATH}")
+torch.save(obj=model_1.state_dict(),
+           f=MODEL_SAVE_PATH)
+
+loaded_model_1 = LinearRegressionModelV2()
+
+loaded_model_1.load_state_dict(torch.load(MODEL_SAVE_PATH))
+
+loaded_model_1.to(device)
+
+loaded_model_1.eval()
+with torch.inference_mode():
+    loaded_model_1_preds = loaded_model_1(X_test)
+y_preds == loaded_model_1_preds

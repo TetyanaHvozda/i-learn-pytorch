@@ -329,3 +329,29 @@ plot_predictions(train_data=X_train_regression.cpu(),
                  test_data=X_test_regression.cpu(),
                  test_labels=y_test_regression.cpu(),
                  predictions=y_preds.cpu())
+
+# 6. Non-linearity
+import matplotlib.pyplot as plt
+from sklearn.datasets import make_circles
+
+n_samples = 1000
+
+X, y = make_circles(n_samples,
+                    noise=0.03,
+                    random_state=42)
+
+plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.RdYlBu)
+
+import torch
+from sklearn.model_selection import train_test_split
+
+X = torch.from_numpy(X).type(torch.float)
+y = torch.from_numpy(y).type(torch.float)
+
+
+X_train, X_test, y_train, y_test = train_test_split(X,
+                                                    y,
+                                                    test_size=0.2,
+                                                    random_state=42)
+
+X_train[:5], y_train[:5]

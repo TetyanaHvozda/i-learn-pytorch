@@ -411,4 +411,25 @@ for epoch in range(epochs):
     if epoch % 10 == 0:
         print(f"Epoch: {epoch} | Loss: {loss:.4f}, Acc: {acc:.2f}% | Test loss: {test_loss:.4f} | Test acc: {test_acc:.2f}")
 
+model_3.eval()
+with torch.inference_mode():
+    y_preds = torch.round(torch.sigmoid(model_3(X_test))).squeeze()
+y_preds[:10], y_test[:10]
 
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.title("Train")
+plot_decision_boundary(model_3, X_train, y_train)
+plt.subplot(1, 2, 2)
+plt.title("Test")
+plot_decision_boundary(model_3, X_test, y_test)
+
+
+# create a rulu function: negative values become 0, positive stay the same
+A = torch.arange(-10, 10, 1, dtype=torch.float32)
+A.dtype
+
+torch.relu(A)
+
+def relu(x: torch.tensor) -> torch.Tensor:
+    return torch.maximum(torch.tensor(0), x)

@@ -433,3 +433,11 @@ torch.relu(A)
 
 def relu(x: torch.tensor) -> torch.Tensor:
     return torch.maximum(torch.tensor(0), x)
+
+def sigmoid(x):
+    return 1/ (1 + torch.exp(-x))
+
+plt.plot(torch.relu(A))
+plt.plot(torch.sigmoid(A))
+
+# Multiclass classification problem

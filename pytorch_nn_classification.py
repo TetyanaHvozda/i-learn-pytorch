@@ -581,3 +581,17 @@ plt.subplot(1, 2, 2)
 plt.title("Test")
 plot_decision_boundary(model_4, X_blob_test, y_blob_test)
 
+# Classification metrics
+# Accuracy
+# Precision
+# Recall
+# F1 - score
+# Confsion matrix
+# Classification report
+
+import torchmetrics
+from torchmetrics import Accuracy
+
+torchmetric_accuracy = Accuracy().to(device)
+
+torchmetric_accuracy(y_preds, y_blob_test)

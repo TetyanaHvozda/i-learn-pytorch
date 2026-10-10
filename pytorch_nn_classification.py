@@ -526,4 +526,8 @@ y_preds
 y_blob_test
 
 # Create a training loop and testing loop for a multiclass pytorch model
+torch.manual_seed(42)
+torch.mps.manual_seed(42)
+
+epochs = 100
 

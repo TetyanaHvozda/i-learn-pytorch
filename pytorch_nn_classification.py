@@ -459,7 +459,7 @@ X_blob, y_blob = make_blobs(n_samples=1000,
 
 # 2. turn data into tensors
 X_blob = torch.from_numpy(X_blob).type(torch.float)
-y_blob = torch.from_numpy(y_blob).type(torch.float)
+y_blob = torch.from_numpy(y_blob).type(torch.LongTensor)
 
 # 3. Split
 X_blob_train, X_blob_test, y_blob_train, y_blob_test = train_test_split(X_blob,
@@ -530,4 +530,54 @@ torch.manual_seed(42)
 torch.mps.manual_seed(42)
 
 epochs = 100
+X_blob_train, y_blob_train = X_blob_train.to(device), y_blob_train.to(device)
+X_blob_test, y_blob_test = X_blob_test.to(device), y_blob_test.to(device)
+
+for epoch in range(epochs):
+    model_4.train()
+
+    y_logits = model_4(X_blob_train)
+    y_pred = torch.softmax(y_logits, dim=1).argmax(dim=1)
+
+    loss = loss_fn(y_logits, y_blob_train)
+    acc = accuracy_fn(y_true=y_blob_train,
+                      y_pred=test_preds)
+
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    model_4.eval()
+    with torch.inference_mode():
+        test_logits = model_4(X_blob_test)
+        test_preds = torch.softmax(test_logits, dim=1).argmax(dim=1)
+
+        test_loss = loss_fn(test_logits, y_blob_test)
+        test_acc = accuracy_fn(y_true=y_blob_test,
+                               y_pred=y_pred)
+
+    if epoch % 10 == 0:
+        print(f"Epoch: {epoch} | Loss: {loss:.4f}, Acc: {acc:.2f}% | Test loss: {test_loss:.4f}, Test acc: {test_acc: .2f}%")
+
+# make and evaluate predictions 
+model_4.eval()
+with torch.inference_mode():
+    y_logits = model_4(X_blob_test)
+
+y_logits[:10]
+
+y_pred_probs = torch.softmax(y_logits, dim=1)
+y_pred_probs[:10]
+
+# from pred probs to pred labels
+y_preds = torch.argmax(y_pred_probs, dim=1)
+y_preds[:10]
+
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.title("Train")
+plot_decision_boundary(model_4, X_blob_train, y_blob_train)
+plt.subplot(1, 2, 2)
+plt.title("Test")
+plot_decision_boundary(model_4, X_blob_test, y_blob_test)
 

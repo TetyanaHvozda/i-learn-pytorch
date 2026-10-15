@@ -141,3 +141,16 @@ model_0("cpu")
 dummy_x = torch.rand([1, 1, 28, 28])
 model_0(dummy_x)
 
+# Accuracy
+def accuracy_fn(y_true, y_pred):
+    correct = torch.eq(y_true, y_pred).sum().item()
+    acc = (correct/len(y_pred)) * 100
+    return acc
+
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(params=model_0.parameters(),
+                            lr=0.1)
+
+accuracy_fn()
+
+# Function to time our modeling code

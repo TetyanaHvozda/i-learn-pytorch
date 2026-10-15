@@ -154,3 +154,17 @@ optimizer = torch.optim.SGD(params=model_0.parameters(),
 accuracy_fn()
 
 # Function to time our modeling code
+from timeit import default_timer as timer
+def print_train_time(start: float,
+                     end: float,
+                     device: torch.device = None):
+    """Prints difference between start and end time."""
+    total_time = end -start
+    print(f"Train time on {device}: {total_time: .3f} seconds")
+    return total_time
+
+start_time = timer()
+end_time = timer()
+print_train_time(start=start_time, end=end_time, device="cpu")
+
+

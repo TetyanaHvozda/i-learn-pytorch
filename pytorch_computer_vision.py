@@ -71,3 +71,30 @@ for i in range(1, rows*cols+1):
     plt.title(class_names[label])
     plt.axis(False)
 
+# mini batches
+from torch.utils.data import DataLoader
+
+BATCH_SIZE = 32
+train_dataloader = DataLoader(dataset=train_data,
+                              batch_size=BATCH_SIZE,
+                              shuffle=True)
+test_dataloader = DataLoader(dataset=test_data,
+                             batch_size=BATCH_SIZE,
+                             shuffle=False)
+test_dataloader, test_dataloader
+print(f"DataLoaders: {train_dataloader, test_dataloader}")
+print(f"Length of train_dataloader: {len(train_dataloader)} batches of {BATCH_SIZE}...")
+print(f"Length of test_dataloader: {len(test_dataloader)} batches of {BATCH_SIZE}...")
+
+train_features_batch, train_labels_batch = next(iter(train_dataloader))
+train_features_batch.shape, train_labels_batch.shape
+
+torch.manual_seed(42)
+random_idx = torch.randint(0, len(train_features_batch), size=[1]).item()
+img, label = train_features_batch[random_idx], train_labels_batch[random_idx]
+plt.imshow(img.squeeze(), cmap="gray")
+plt.title(class_names[label])
+plt.axis(False)
+print(f"Image size: {img.shape}")
+print(f"Label: {label}, label size: {label.shape}")
+

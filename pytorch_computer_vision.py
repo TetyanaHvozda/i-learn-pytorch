@@ -164,7 +164,59 @@ def print_train_time(start: float,
     return total_time
 
 start_time = timer()
+# some code
 end_time = timer()
 print_train_time(start=start_time, end=end_time, device="cpu")
 
 
+from tqdm.auto import tqdm
+
+torch.manual_seed(42)
+train_time_start_on_cpu = timer()
+
+epochs = 3
+
+for epoch in tqdm(range(epochs)):
+    print(f"Epoch: {epoch}\n-----")
+    train_loss = 0
+    for batch, (X, y) in enumerate(train_dataloader):
+        model_0.train()
+        y_pred = model_0(X)
+
+        loss = loss_fn(y_pred, y)
+        train_loss += loss
+
+        optimizer.zero_grad()
+
+        loss.backward()
+
+        optimizer.step()
+
+        if batch & 400 == 0:
+            print(f"Looked at: {batch * len(X)}/{len(train_dataloader.dataset)} samples.")
+
+    train_loss /= len(train_dataloader)
+
+    test_loss, test_acc = 0, 0
+    model_0.eval()
+    with torch.inference_mode():
+        for X_test, y_test in test_dataloader:
+            test_pred = model_0(X_test)
+
+            test_loss += loss_fn(test_pred, y_test)
+
+            test_acc += accuracy_fn(y_true=y_test, y_pred=test_pred.argmax(dim=1))
+
+
+        test_loss /= len(test_data)
+
+        test_acc /= len(test_dataloader)
+
+    print(f"\nTrain loss: {train_loss:.4f} | Test loss: {test_loss: .4f}, Test acc: {test_acc: 4f}")
+
+train_time_end_on_cpu = timer()
+total_train_time_model_0 = print_train_time(start=train_time_start_on_cpu,
+                                            end=train_time_end_on_cpu,
+                                            device=str(next(model_0.parameters())))
+
+str(next(model_0.parameters()).device())

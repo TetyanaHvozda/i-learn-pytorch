@@ -282,3 +282,40 @@ model_1 = FashionMNISTModelV1(input_shape=784,
 
 next(model_1.parameters()).device
 
+# loss, optimizer, eval
+loss_fn = nn.CrossEntropyLoss()
+optimizer = torch.optim.SGD(params=model_1.parameters(),
+                            lr=0.1)
+
+# create training and eval/test loops functions
+def train_step(model: torch.nn.Module,
+               data_loader: torch.utils.data.DataLoader,
+               loss_fn: torch.nn.Module,
+               optimizer: torch.optim.Optimizer,
+               accuracy_fn,
+               device: torch.device = device):
+    """Performs a training with model trying to learn on data_loader"""
+    train_loss, train_acc = 0, 0
+
+    model.train()
+
+    for batch, (X, y) in enumerate(data_loader):
+        X, y = X.to(device), y.to(device)
+
+        y_pred = model(X)
+
+        loss = loss_fn(y_pred, y)
+        train_loss += loss
+        train_acc += accuracy_fn(y_true=y,
+                                 y_pred=y_pred.argmax(dim=1)) # from logits to prediction labels
+
+        optimizer.zero_grad()
+
+        loss.backward()
+
+        optimizer.step()
+
+    
+    train_loss /= len(data_loader)
+    train_acc /= len(data_loader)
+    print(f"Train loss: {train_loss: 5f} | Train acc: {train_acc: 2f}%")    
